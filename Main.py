@@ -16,9 +16,19 @@ wlan.active(True)
 wlan.connect(SSID, PASSWORD)
 
 while not wlan.isconnected():
-    pass
+  pass
 
 print(f"✅ Connected to WiFi! IP Address: {wlan.ifconfig()[0]}")
+
+AP_SSID = "SSS"
+AP_PASSWORD = "12345678" 
+AP_AUTH_MODE = network.AUTH_WPA2_PSK  # Secure mode
+
+ap = network.WLAN(network.AP_IF)
+ap.active(True)  # Ensure AP mode is active first
+ap.config(essid=AP_SSID, password=AP_PASSWORD, authmode=AP_AUTH_MODE) 
+print("Access Point Active")
+print("AP IP Address:", ap.ifconfig()[0])
 
 # Initialize OLED Display
 i2c = machine.I2C(scl=machine.Pin(9), sda=machine.Pin(8))
@@ -114,4 +124,5 @@ while True:
     conn.send(f"HTTP/1.1 200 OK\r\nContent-Type: {content_type}\r\nContent-Length: {len(response)}\r\n\r\n{response}".encode())
     conn.close()
     gc.collect()
+
 
