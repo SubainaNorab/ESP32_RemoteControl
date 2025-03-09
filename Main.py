@@ -17,13 +17,24 @@ PASSWORD = "cant7301"
 # Connect ESP32 to Wi-Fi
 sta = network.WLAN(network.STA_IF)
 sta.active(True)
-sta.connect(SSID, PASSWORD)
 
-while not sta.isconnected():
-    time.sleep(1)
+if not sta.isconnected():
+    print("Connecting to WiFi", end="")
+    sta.connect(SSID, PASSWORD)
+    
+    for _ in range(15):  # More attempts for better stability
+        if sta.isconnected():
+            break
+        print(".", end="")  # Show progress
+        time.sleep(1)
 
-ip_address = sta.ifconfig()[0]
-print(f"Connected to Wi-Fi, IP: {ip_address}")
+if sta.isconnected():
+    ip_address = sta.ifconfig()[0]
+    print(f"\n✅ Connected to WiFi! IP Address: {ip_address}")
+else:
+    print("\n❌ Failed to connect. Check credentials or signal strength.")
+    machine.reset()  # Restart ESP32 if WiFi fails
+
 
 # Encryption function (simple XOR)
 def encrypt(text, key=5):
@@ -78,36 +89,44 @@ def serve_static_file(filename):
 
     return f"HTTP/1.1 200 OK\nContent-Type: {content_type}\n\n{content}"
 
+
 # Start Web Server
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(('', 80))
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # Allow reusing the address
+server.bind(('', 80))  # Use port 80
 server.listen(5)
 
-print("Server started. Waiting for connections...")
+print("🌐 Server started. Waiting for connections...")
 
-# Main loop to handle requests
 while True:
-    conn, addr = server.accept()
-    request = conn.recv(1024).decode()
-    
-    if "GET /files" in request:
-        response = list_files()
-    elif "GET /read?file=" in request:
-        filename = request.split("GET /read?file=")[1].split(" ")[0]
-        response = read_file(filename)
-    elif "GET /system" in request:
-        response = get_system_info()
-    elif "GET /wifi" in request:
-        response = get_wifi_signal()
-    elif "POST /encrypt" in request:
-        text = request.split("\r\n\r\n")[-1]
-        response = encrypt(text)
-    elif "GET /script.js" in request:
-        response = serve_static_file("script.js")
-    elif "GET /" in request:  # Serve index.html
-        response = serve_static_file("index.html")
-    else:
-        response = "Invalid Request"
+    try:
+        conn, addr = server.accept()
+        print(f"📡 Connection from {addr}")
+        request = conn.recv(1024).decode()
+        
+        # Handle different requests
+        if "GET /files" in request:
+            response = list_files()
+        elif "GET /read?file=" in request:
+            filename = request.split("GET /read?file=")[1].split(" ")[0]
+            response = read_file(filename)
+        elif "GET /system" in request:
+            response = get_system_info()
+        elif "GET /wifi" in request:
+            response = get_wifi_signal()
+        elif "POST /encrypt" in request:
+            text = request.split("\r\n\r\n")[-1]
+            response = encrypt(text)
+        elif "GET /script.js" in request:
+            response = serve_static_file("script.js")
+        elif "GET /" in request:  # Serve index.html
+            response = serve_static_file("index.html")
+        else:
+            response = "Invalid Request"
 
-    conn.send(response)
-    conn.close()
+        conn.send("HTTP/1.1 200 OK\nContent-Type: application/json\n\n" + response)
+        conn.close()
+    
+    except Exception as e:
+        print(f"❌ Error: {e}")
+
