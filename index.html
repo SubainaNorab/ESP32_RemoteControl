@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP 32</title>
-</head>
-<body>
-    <h1>Hi</h1>
-</body>
-</html>
+    <head>
+        <title>ESP32 </title>
+        <script src="/script.js"></script>
+        <style>
+            body { font-family: Arial, sans-serif; text-align: center; }
+            button { padding: 10px; font-size: 16px; }
+            input { padding: 5px; font-size: 14px; }
+        </style>
+    </head>
+    <body>
+        <h2>ESP32 System Info</h2>
+        <p id="systemInfo">Loading...</p>
+    
+        <h2>Send Encrypted Text</h2>
+        <input type="text" id="commandInput" placeholder="Enter command">
+        <button onclick="sendCommand()">Send</button>
+    
+        <h3>Encrypted Output:</h3>
+        <p id="output"></p>
+    
+        <h3>Decrypted Output:</h3>
+        <p id="decryptedOutput"></p>
+    
+       
+    </body>
+    </html>
