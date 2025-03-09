@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>ESP32 </title>
-        <script src="/script.js"></script>
-        <style>
-            body { font-family: Arial, sans-serif; text-align: center; }
-            button { padding: 10px; font-size: 16px; }
-            input { padding: 5px; font-size: 14px; }
-        </style>
-    </head>
-    <body>
-        <h2>ESP32 System Info</h2>
-        <p id="systemInfo">Loading...</p>
+<html>
+<head>
+    <title>ESP32 Web Server</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        button { margin: 5px; padding: 10px; }
+        textarea { width: 80%; height: 100px; }
+    </style>
+   
+</head>
+<body>
+    <h2>ESP32 Web Server</h2>
     
-        <h2>Send Encrypted Text</h2>
-        <input type="text" id="commandInput" placeholder="Enter command">
-        <button onclick="sendCommand()">Send</button>
-    
-        <h3>Encrypted Output:</h3>
-        <p id="output"></p>
-    
-        <h3>Decrypted Output:</h3>
-        <p id="decryptedOutput"></p>
-    
-       
-    </body>
-    </html>
+    <h3>File System Explorer</h3>
+    <button onclick="fetchFiles()">List Files</button>
+    <pre id="files"></pre>
+
+    <h3>System Monitoring</h3>
+    <button onclick="fetchSystemInfo()">Check RAM & CPU</button>
+    <pre id="system"></pre>
+
+    <h3>Wi-Fi Connection Tester</h3>
+    <button onclick="fetchWiFi()">Test Wi-Fi</button>
+    <pre id="wifi"></pre>
+
+    <h3>Data Encryption Mode</h3>
+    <textarea id="inputText" placeholder="Enter text to encrypt"></textarea><br>
+    <button onclick="encryptText()">Encrypt</button>
+    <pre id="encrypted"></pre>
+</body>
+</html>

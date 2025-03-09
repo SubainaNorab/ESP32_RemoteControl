@@ -1,21 +1,32 @@
-// XOR Encryption for Browser
-function xorEncrypt(text, key) {
-    return text.split('').map(c => String.fromCharCode(c.charCodeAt(0) ^ key)).join('');
-}
-
-function sendCommand() {
-    var cmd = document.getElementById("commandInput").value;
-    var encryptedCmd = xorEncrypt(cmd, 42);  // Encrypt before sending
-    document.getElementById("output").innerText = encryptedCmd;
-    
-    fetch('/command?cmd=' + encodeURIComponent(encryptedCmd))
-        .then(() => { 
-            document.getElementById("decryptedOutput").innerText = cmd;
+function fetchFiles() {
+    fetch("/files")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("files").innerText = JSON.stringify(data, null, 2);
         });
 }
-function updateSystemInfo() {
-    fetch('/system')
-        .then(response => response.text())
-        .then(data => { document.getElementById("systemInfo").innerText = data; });
+
+function fetchSystemInfo() {
+    fetch("/system")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("system").innerText = `RAM: ${data.free_ram} bytes, CPU: ${data.cpu_freq} Hz`;
+        });
 }
-setInterval(updateSystemInfo, 5000);
+
+function fetchWiFi() {
+    fetch("/wifi")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("wifi").innerText = `Signal: ${data.rssi} dBm, Connected: ${data.is_connected}`;
+        });
+}
+
+function encryptText() {
+    let text = document.getElementById("inputText").value;
+    fetch("/encrypt", { method: "POST", body: text })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("encrypted").innerText = `Encrypted: ${data}`;
+        });
+}
