@@ -1,32 +1,34 @@
-function fetchFiles() {
-    fetch("/files")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("files").innerText = JSON.stringify(data, null, 2);
-        });
+async function fetchFiles() {
+    const response = await fetch('/files');
+    const data = await response.json();
+    document.getElementById('files').textContent = JSON.stringify(data, null, 2);
 }
 
-function fetchSystemInfo() {
-    fetch("/system")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("system").innerText = `RAM: ${data.free_ram} bytes, CPU: ${data.cpu_freq} Hz`;
-        });
+async function fetchSystemInfo() {
+    const response = await fetch('/system');
+    const data = await response.json();
+    document.getElementById('system').textContent = `Free RAM: ${data.heap_free} bytes\nCPU Usage: ${data.cpu_usage}`;
 }
 
-function fetchWiFi() {
-    fetch("/wifi")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("wifi").innerText = `Signal: ${data.rssi} dBm, Connected: ${data.is_connected}`;
-        });
+async function fetchWiFi() {
+    const response = await fetch('/wifi');
+    const data = await response.json();
+    document.getElementById('wifi').textContent = `IP Address: ${data.ip}`;
 }
 
-function encryptText() {
-    let text = document.getElementById("inputText").value;
-    fetch("/encrypt", { method: "POST", body: text })
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("encrypted").innerText = `Encrypted: ${data}`;
-        });
+async function encryptText() {
+    const text = document.getElementById('inputText').value;
+    if (!text) {
+        alert("Please enter text to encrypt.");
+        return;
+    }
+
+    const response = await fetch('/encrypt', {
+        method: 'POST',
+        body: text,
+    });
+
+    const data = await response.json();
+    document.getElementById('encrypted').textContent = `Encrypted: ${data.encrypted}`;
 }
+

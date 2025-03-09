@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESP32 Web Server</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
-        button { margin: 5px; padding: 10px; }
+        button { padding: 10px; }
         textarea { width: 80%; height: 100px; }
     </style>
-   
 </head>
 <body>
     <h2>ESP32 Web Server</h2>
-    
+
     <h3>File System Explorer</h3>
     <button onclick="fetchFiles()">List Files</button>
     <pre id="files"></pre>
@@ -28,5 +29,8 @@
     <textarea id="inputText" placeholder="Enter text to encrypt"></textarea><br>
     <button onclick="encryptText()">Encrypt</button>
     <pre id="encrypted"></pre>
+
+    <script src="script.js"></script>
 </body>
 </html>
+
