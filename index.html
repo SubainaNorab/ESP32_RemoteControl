@@ -6,7 +6,7 @@
     <title>ESP32 Web Server</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
-        button { padding: 10px; }
+        button { padding: 10px; margin: 5px; cursor: pointer; }
         textarea { width: 80%; height: 100px; }
     </style>
 </head>
@@ -14,23 +14,31 @@
     <h2>ESP32 Web Server</h2>
 
     <h3>File System Explorer</h3>
-    <button onclick="fetchFiles()">List Files</button>
+    <button id="listFiles">List Files</button>
     <pre id="files"></pre>
 
     <h3>System Monitoring</h3>
-    <button onclick="fetchSystemInfo()">Check RAM & CPU</button>
+    <button id="checkSystem">Check RAM & CPU</button>
     <pre id="system"></pre>
 
     <h3>Wi-Fi Connection Tester</h3>
-    <button onclick="fetchWiFi()">Test Wi-Fi</button>
+    <button id="testWiFi">Test Wi-Fi</button>
     <pre id="wifi"></pre>
 
     <h3>Data Encryption Mode</h3>
     <textarea id="inputText" placeholder="Enter text to encrypt"></textarea><br>
-    <button onclick="encryptText()">Encrypt</button>
+    <button id="encryptText">Encrypt</button>
     <pre id="encrypted"></pre>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("listFiles").addEventListener("click", fetchFiles);
+            document.getElementById("checkSystem").addEventListener("click", fetchSystemInfo);
+            document.getElementById("testWiFi").addEventListener("click", fetchWiFi);
+            document.getElementById("encryptText").addEventListener("click", encryptText);
+        });
+    </script>
 </body>
 </html>
 
