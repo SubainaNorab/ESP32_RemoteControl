@@ -11,8 +11,8 @@ import json
 gc.collect()
 
 # Wi-Fi Configuration
-SSID = "Your_SSID"
-PASSWORD = "Your_PASSWORD"
+SSID = "Sbain"
+PASSWORD = "cant7301"
 
 # Connect ESP32 to Wi-Fi
 sta = network.WLAN(network.STA_IF)
