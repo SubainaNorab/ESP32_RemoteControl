@@ -1,0 +1,89 @@
+body {
+    background-image: url(light.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.file, .system {
+    width: 300px;
+    height: 250px;
+    background-color: rgb(234, 214, 237);
+    box-shadow: 4px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes content to top and bottom */
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.file {
+    margin-top: 15px;
+    margin-right: 250px;
+}
+
+.system {
+    margin-top: 15px;
+}
+
+.data {
+    background-color: rgb(236, 216, 239);
+    box-shadow: 4px;
+    width: 600px;
+    height: 140px;
+    border-radius: 5px;
+    
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px;
+    margin-left: 300px;
+}
+
+#fl, #sys {
+    height: 30px;
+    width: 150px;
+    text-align: center;
+    margin-top: auto; 
+}
+
+h2 {
+    margin-top: 10px;
+}
+#text-input {
+    width: 90%;
+    height: 30px;
+    text-align: center;
+    margin-top: auto;
+}
+
+#enc, #dec {
+    height: 30px;
+    width: 100px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+#enc{
+    margin-left: 150px;
+}
+button{
+    background-color: rgb(105, 40, 165);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+}
+button:hover{
+    background-color: rgb(15, 5, 9);
+}
