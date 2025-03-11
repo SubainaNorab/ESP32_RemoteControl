@@ -6,120 +6,115 @@
 <link rel="stylesheet" href="/static/style.css">
     <title>ESP32 Web Server</title>
     <style>
-            body {
-                background-image: url("/light.jpg");
-                background-size: cover;
-                background-position: center;
-            }
+        body {
+    background-image: url("/light.jpg");
+    background-size: cover;
+    background-position: center;
+}
 
-            h1 {
-                color: white;
-                text-align: center;
-            }
+h1 {
+    color: white;
+    text-align: center;
+}
 
-            .container {
-                display: flex;
-                justify-content: center;
-                gap: 20px;
-            }
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
 
-            .file, .system {
-                width: 300px;
-                height: 250px;
-                background-color: rgb(234, 214, 237);
-                box-shadow: 4px;
-                border-radius: 5px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between; /* Pushes content to top and bottom */
-                align-items: center;
-                padding: 20px;
-                text-align: center;
-            }
+.file, .system {
+    width: 300px;
+    height: 250px;
+    background-color: rgb(234, 214, 237);
+    box-shadow: 4px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes content to top and bottom */
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
 
-            .file {
-                margin-top: 15px;
-                margin-right: 250px;
-            }
+.file {
+    margin-top: 15px;
+    margin-right: 250px;
+}
 
-            .system {
-                margin-top: 15px;
-            }
+.system {
+    margin-top: 15px;
+}
 
-            .data {
-                background-color: rgb(236, 216, 239);
-                box-shadow: 4px;
-                width: 600px;
-                height: 140px;
-                border-radius: 5px;
-                
-                align-items: center;
-                padding: 20px;
-                margin-top: 20px;
-                margin-left: 300px;
-            }
+.data {
+    background-color: rgb(236, 216, 239);
+    box-shadow: 4px;
+    width: 600px;
+    height: 140px;
+    border-radius: 5px;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px;
+    margin-left: 300px;
+}
 
-            #fl, #sys {
-                height: 30px;
-                width: 150px;
-                text-align: center;
-                margin-top: auto; 
-            }
+#fl, #sys {
+    height: 30px;
+    width: 150px;
+    text-align: center;
+    margin-top: auto;
+}
 
-            h2 {
-                margin-top: 10px;
-            }
-            #text-input {
-                width: 90%;
-                height: 30px;
-                text-align: center;
-                margin-top: auto;
-            }
+h2 {
+    margin-top: 10px;
+}
+#text-input {
+    width: 90%;
+    height: 30px;
+    text-align: center;
+    margin-top: auto;
+}
 
-            #enc, #dec {
-                height: 30px;
-                width: 100px;
-                margin-top: 20px;
-                margin-left: 20px;
-            }
-            #enc{
-                margin-left: 150px;
-            }
-            button{
-                background-color: rgb(105, 40, 165);
-                color: white;
-                font-weight: bold;
-                border: none;
-                border-radius: 3px;
-            }
-            button:hover{
-                background-color: rgb(15, 5, 9);
-            }
+#enc, #dec {
+    height: 30px;
+    width: 100px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+#enc{
+    margin-left: 150px;
+}
+button{
+    background-color: rgb(105, 40, 165);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+}
+button:hover{
+    background-color: rgb(15, 5, 9);
+}
 
 
     </style>
-    
+
 </head>
 <body>
-    <!-- developer page -->
     <h1> DEVELOPER MODE</h1>
     <div class="container">
-        <!-- to display files -->
         <div class="box file">
             <h2>File System</h2>
             <button onclick="fetchFiles()" id="fl">List Files</button>
             <pre id="file-list"></pre>
         </div>
         <div class="box system">
-            <!-- to display system info -->
             <h2>System Monitoring</h2>
             <button onclick="fetchSystemInfo()" id="sys">Check System Info</button>
             <pre id="system-info"></pre>
         </div>
     </div>
-    
+
     <div class="data">
-        <!-- for data encryption and decryption -->
         <h2>Data Encryption Decryption Mode</h2>
         <textarea id="text-input" placeholder="Enter text"></textarea>
         <button onclick="encryptText()" id="enc">Encrypt</button>
@@ -127,7 +122,6 @@
         <pre id="encrypted-output"></pre>
     </div>
     <script>
-        // functions for above tasks
         function fetchFiles() {
             fetch('/files')
             .then(response => response.text())
