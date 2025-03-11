@@ -5,22 +5,23 @@ import ubinascii
 import gc
 import machine
 import ssd1306
+import esp32
 
 # Wi-Fi Credentials
 SSID = "Sbain"
 PASSWORD = "cant7301"
 
 # Connect to Wi-Fi
-wlan = network.WLAN(network.STA_IF)
-wlan.active(True)
-wlan.connect(SSID, PASSWORD)
+stm = network.WLAN(network.STA_IF)
+stm.active(True)
+stm.connect(SSID, PASSWORD)
 
-while not wlan.isconnected():
+while not stm.isconnected():
     pass
 
-print(f"Connected to WiFi! IP Address: {wlan.ifconfig()[0]}")
+print(f"Connected to WiFi! IP Address: {stm.ifconfig()[0]}")
 
-# Setup Access Point Mode (Optional)
+# Setup  for Access Point Mode 
 AP_SSID = "SSS"
 AP_PASSWORD = "12345678"
 AP_AUTH_MODE = network.AUTH_WPA2_PSK
@@ -35,7 +36,7 @@ print("AP IP Address:", ap.ifconfig()[0])
 i2c = machine.I2C(scl=machine.Pin(9), sda=machine.Pin(8))
 oled = ssd1306.SSD1306_I2C(128, 64, i2c)
 
-# Store last encrypted text
+# Store last encrypted text to decrypt later
 last_encrypted = ""
 
 # Read HTML File
@@ -95,9 +96,10 @@ def display_encryption(enc_text, dec_text=None):
 
 # Get System Monitoring Info
 def get_system_info():
-    total_ram = gc.mem_alloc() + gc.mem_free()
-    used_ram = gc.mem_alloc()
-    free_ram = gc.mem_free()
+    total_ram = esp32.idf_heap_info(0)['total']  # Get total RAM
+    free_ram = esp32.idf_heap_info(0)['free']   # Get free RAM
+    used_ram = total_ram - free_ram             # Calculate used RAM
+    
     return f"Total RAM: {total_ram} bytes\nUsed RAM: {used_ram} bytes\nFree RAM: {free_ram} bytes"
 
 # Start Web Server
@@ -118,25 +120,25 @@ while True:
     if "GET / " in request or "GET /index.html" in request:
         response = read_html()
         content_type = "text/html"
-
+# for image file
     elif "GET /light.jpg" in request:
         serve_file("light.jpg", conn)
         conn.close()
         continue
-
+# for stored files
     elif "GET /files" in request:
         response = list_files()
         content_type = "text/plain"
-
+# for system info
     elif "GET /system" in request:
         response = get_system_info()
         content_type = "text/plain"
-
+# for encryption
     elif "POST /encrypt" in request:
         content = request.split("\r\n\r\n")[-1]
         response = encrypt_text(content)  # Encrypt and show on OLED
         content_type = "text/plain"
-
+# for descryption
     elif "POST /decrypt" in request:
         content = request.split("\r\n\r\n")[-1]
         response = decrypt_text(content)  # Decrypt and show on OLED
