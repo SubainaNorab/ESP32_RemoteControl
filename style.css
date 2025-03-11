@@ -44,7 +44,6 @@ h1 {
     width: 600px;
     height: 140px;
     border-radius: 5px;
-    
     align-items: center;
     padding: 20px;
     margin-top: 20px;
@@ -55,7 +54,7 @@ h1 {
     height: 30px;
     width: 150px;
     text-align: center;
-    margin-top: auto; 
+    margin-top: auto;
 }
 
 h2 {

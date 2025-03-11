@@ -5,10 +5,12 @@ import ubinascii
 import gc
 import machine
 import ssd1306
+import dht
+import time
 
 # Wi-Fi Credentials
-SSID = "Sbain"
-PASSWORD = "cant7301"
+SSID = "Wifi-79J"
+PASSWORD = "797979jjj"
 
 # Connect to Wi-Fi
 wlan = network.WLAN(network.STA_IF)
@@ -35,6 +37,30 @@ print("AP IP Address:", ap.ifconfig()[0])
 i2c = machine.I2C(scl=machine.Pin(9), sda=machine.Pin(8))
 oled = ssd1306.SSD1306_I2C(128, 64, i2c)
 
+dht_pin = machine.Pin(4)
+dht_sensor = dht.DHT11(dht_pin)
+
+led_red = machine.Pin(5, machine.Pin.OUT)
+led_green = machine.Pin(18, machine.Pin.OUT)
+led_blue = machine.Pin(19, machine.Pin.OUT)
+
+# Function to read temperature and humidity
+def read_dht():
+    try:
+        dht_sensor.measure()
+        temp = dht_sensor.temperature()
+        hum = dht_sensor.humidity()
+        return temp, hum
+    except:
+        return None, None
+
+# Function to update RGB LED
+def set_rgb(r, g, b):
+    led_red.value(r)
+    led_green.value(g)
+    led_blue.value(b)
+
+
 # Store last encrypted text
 last_encrypted = ""
 
@@ -45,6 +71,66 @@ def read_html():
             return file.read()
     except:
         return "<h1>index.html Not Found</h1>"
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("0.0.0.0", 80))
+server.listen(5)
+
+print("Server started. Waiting for connections...")
+
+while True:
+    conn, addr = server.accept()
+    request = conn.recv(1024).decode()
+    print(f"Received request: {request}")
+
+    response = "404 Not Found"
+    content_type = "text/plain"
+
+    # Function to read homepage.html
+def read_homepage():
+    try:
+        with open("homepage.html", "r") as file:
+            return file.read()
+    except:
+        return "<h1>homepage.html Not Found</h1>"
+
+# Function to read index.html
+def read_index():
+    try:
+        with open("index.html", "r") as file:
+            return file.read()
+    except:
+            return "<h1>index.html Not Found</h1>"
+
+    # Handle requests
+    if "GET / " in request or "GET /homepage.html" in request:
+        response = read_homepage()
+        content_type = "text/html"
+
+    elif "GET /index.html" in request:
+        response = read_index()
+        content_type = "text/html"
+
+    elif "GET /dht" in request:
+        temp, hum = read_dht()
+        response = f"Temperature: {temp}C, Humidity: {hum}%" if temp is not None else "DHT11 Read Error"
+        content_type = "text/plain"
+        
+    elif "POST /rgb" in request:
+        try:
+            content = request.split("\r\n\r\n")[-1]
+            r, g, b = map(int, content.split(","))
+            set_rgb(r, g, b)
+            response = "RGB Set Successfully"
+        except:
+            response = "Invalid RGB Values"
+        content_type = "text/plain"
+
+    # Send HTTP Response
+    conn.send(f"HTTP/1.1 200 OK\r\nContent-Type: {content_type}\r\nContent-Length: {len(response)}\r\n\r\n".encode())
+    conn.sendall(response.encode() if isinstance(response, str) else response)
+    conn.close()
+    gc.collect()
 
 # List Files in ESP32
 def list_files():
@@ -147,4 +233,3 @@ while True:
     conn.sendall(response.encode() if isinstance(response, str) else response)
     conn.close()
     gc.collect()
-
