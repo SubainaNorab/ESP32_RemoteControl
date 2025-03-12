@@ -103,6 +103,33 @@ def web_server():
         elif "GET /index.html" in request:
             response = read_file("index.html")
             content_type = "text/html"
+            
+        elif "GET /setRGB" in request:
+            try:
+                params = request.split(" ")[1].split("?")[1]
+                r, g, b = [int(param.split("=")[1]) for param in params.split("&")]
+                set_color(r, g, b)
+                
+                oled.fill(0)
+                oled.text(f"RGB: {r},{g},{b}", 0, 10)
+                oled.show()
+
+                response = "RGB Updated"
+                content_type = "text/plain"
+            except:
+                response = "Invalid Input"
+                content_type = "text/plain"
+
+        elif "GET /displayText" in request:
+            try:
+                params = request.split(" ")[1].split("?")[1]
+                text = params.split("=")[1].replace("+", " ")
+                display_text_on_oled(text)
+                response = "Text Displayed"
+                content_type = "text/plain"
+            except:
+                response = "Invalid Input"
+                content_type = "text/plain"
 
         elif "GET /sensorData" in request:
             dht_sensor.measure()
