@@ -10,8 +10,8 @@ import gc
 from neopixel import NeoPixel
 
 # Wi-Fi Setup
-SSID = "Wifi-79J"
-PASSWORD = "797979jjjj"
+SSID = "Sbain"
+PASSWORD = "cant7301"
 
 sta = network.WLAN(network.STA_IF)
 sta.active(True)
@@ -159,6 +159,27 @@ def web_server():
             content = request.split("\r\n\r\n")[-1]
             response = decrypt_text(content)
             content_type = "text/plain"
+            
+        elif "GET /light.jpg" in request:
+            try:
+                with open("light.jpg", "rb") as file:
+                    conn.sendall("HTTP/1.1 200 OK\r\nContent-Type: image/jpeg\r\n\r\n".encode())
+
+                    chunk_size = 1024  # Adjust if needed
+                    while True:
+                        chunk = file.read(chunk_size)
+                        if not chunk:
+                            break
+                        conn.sendall(chunk)  # Send each chunk correctly
+
+            except Exception as e:
+                print("Error serving image:", e)
+                conn.sendall("HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\nImage Not Found".encode())
+
+            #finally:
+            #    conn.close()  # Ensure the connection is properly closed
+             
+             #gc.collect()
 
         else:
             response = "<h1>404 Not Found</h1>"
@@ -171,3 +192,4 @@ def web_server():
         gc.collect()
 
 web_server()
+
