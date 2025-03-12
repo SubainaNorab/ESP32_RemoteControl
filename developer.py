@@ -7,8 +7,8 @@ import machine
 import ssd1306
 
 # Wi-Fi Credentials
-SSID = "Sbain"
-PASSWORD = "cant7301"
+SSID = "Wifi-79J"
+PASSWORD = "797979jjj"
 
 # Connect to Wi-Fi
 wlan = network.WLAN(network.STA_IF)
@@ -102,7 +102,7 @@ def get_system_info():
 
 # Start Web Server
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("0.0.0.0", 80))
+server.bind(("0.0.0.0", 8080))
 server.listen(5)
 
 print("Server started. Waiting for connections...")

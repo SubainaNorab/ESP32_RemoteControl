@@ -5,42 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESP32 Webserver</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             text-align: center;
-            background-color: #f9f9f9;
+            background: url('https://wallpapercave.com/wp/wp2563382.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
             padding: 20px;
         }
         .container {
-            max-width: 350px;
+            max-width: 400px;
             margin: auto;
-            background: white;
+            background: rgba(0, 0, 0, 0.85);
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
         }
-        input[type="number"] {
-            width: 60px;
-            padding: 6px;
-            margin: 5px 10px;
-            text-align: center;
+        h2 {
+            color: #ffcc00;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+            accent-color: #ffcc00;
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
         }
         button {
-            padding: 10px;
-            background: #4CAF50;
+            padding: 12px;
+            background: #ff5733;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
             margin-top: 10px;
+            transition: 0.3s;
         }
         button:hover {
-            background: #45a049;
+            background: #ffcc00;
+            transform: scale(1.05);
         }
         .sensor-data {
             margin-top: 15px;
             font-size: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -48,17 +67,26 @@
     <div class="container">
         <h2>ESP32 RGB LED Control</h2>
         <label>Red:</label>
-        <input type="number" id="red" min="0" max="255" value="0">
-        <label>Green:</label>
-        <input type="number" id="green" min="0" max="255" value="0">
-        <label>Blue:</label>
-        <input type="number" id="blue" min="0" max="255" value="0">
+        <input type="range" id="red" min="0" max="255" value="0" oninput="sendRGB()">
         <br>
-        <button onclick="sendRGB()">Set RGB</button>
-        <div class="sensor-data">
-            <p>Temperature: <span id="temp">--</span>°C</p>
-            <p>Humidity: <span id="humidity">--</span>%</p>
+        <label>Green:</label>
+        <input type="range" id="green" min="0" max="255" value="0" oninput="sendRGB()">
+        <br>
+        <label>Blue:</label>
+        <input type="range" id="blue" min="0" max="255" value="0" oninput="sendRGB()">
+        <br>
+        <div class="container">
+            <h2>ESP32 OLED Display</h2>
+            <input type="text" id="oledText" placeholder="Enter text">
+            <button onclick="sendText()">Display on OLED</button>
         </div>
+        <br>
+        <div class='sensor-data'>
+            <p>Temperature: <span id='temp'>--</span>°C</p>
+            <p>Humidity: <span id='humidity'>--</span>%</p>
+        </div>
+        <br>
+        <button onclick='toggleDevMode()'>Developer Mode</button>
     </div>
     <script>
         function sendRGB() {
@@ -77,6 +105,13 @@
                 });
         }
         setInterval(updateSensorData, 5000);
+        function sendText() {
+            let text = document.getElementById('oledText').value;
+            fetch(`/displayText?text=${encodeURIComponent(text)}`);
+        }
+        function toggleDevMode() {
+            window.location.href = '/index.html';
+        }
     </script>
 </body>
 </html>
