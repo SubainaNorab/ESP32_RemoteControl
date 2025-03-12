@@ -26,7 +26,7 @@ while not sta.isconnected() and timeout > 0:
 if sta.isconnected():
     print("Connected! IP:", sta.ifconfig()[0])
 else:
-    print("Failed to connect to WiFi")
+    print("Failed to connect to WiFi.")
 
 # Access Point Setup (Optional)
 ap = network.WLAN(network.AP_IF)
