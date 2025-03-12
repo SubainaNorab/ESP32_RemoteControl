@@ -10,8 +10,8 @@ import gc
 from neopixel import NeoPixel
 
 # Wi-Fi Setup
-SSID = "Wifi-79J"
-PASSWORD = "797979jjjj"
+SSID = "Awan-House-445E(1)"
+PASSWORD = "226677899"
 
 sta = network.WLAN(network.STA_IF)
 sta.active(True)
@@ -26,7 +26,7 @@ while not sta.isconnected() and timeout > 0:
 if sta.isconnected():
     print("Connected! IP:", sta.ifconfig()[0])
 else:
-    print("Failed to connect to WiFi")
+    print("Failed to connect to WiFi.Restarting...")
 
 # Access Point Setup (Optional)
 ap = network.WLAN(network.AP_IF)
