@@ -32,17 +32,72 @@ def set_color(r, g, b):
     neo[0] = (r, g, b)
     neo.write()
 
-# HTML Webpage
+# HTML Webpage with Improved CSS
 html = """<!DOCTYPE html>
 <html>
 <head>
     <title>ESP32 Webserver</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f9f9f9; padding: 20px; }
-        .container { max-width: 350px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); }
-        input { width: 60px; padding: 6px; margin: 5px; text-align: center; }
-        button { padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #45a049; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #f3f4f6, #dfe3e8);
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        input {
+            width: 65px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 16px;
+            margin: 5px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        button {
+            padding: 12px 18px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+            transition: background 0.3s, transform 0.1s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        .sensor-data {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
