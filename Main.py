@@ -10,8 +10,8 @@ import gc
 from neopixel import NeoPixel
 
 # Wi-Fi Setup
-SSID = "Sbain"
-PASSWORD = "cant7301"
+SSID = "Hadia"
+PASSWORD = "8777hadia"
 
 sta = network.WLAN(network.STA_IF)
 sta.active(True)
